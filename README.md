@@ -1,4 +1,4 @@
-CompanyCompanyCompanycomparecomparecomparecomparecomparecompareCompanyCompanyCompanyCompanyCompanyCompanyCompanyCompany.SYNOPSIS
+.SYNOPSIS
 
 Script for comparing users in a company list to users in a distribution list.
 
