@@ -6,9 +6,9 @@ DESCRIPTION
 
 This PowerShell script take a Company Name (Company) and an optional Department (Dept) name along with the name of a Distribution list (Distro) and compares the active Directory information for the two entries and displays a list of differences if any are found. Thus, allowing users to ensure Distribution lists are properly maintained when new employees are added to the system. If multiple distro checks are done against the same Company/Dept, the previously cached Company/Dept data will be used to increase the efficiency of the process. If a different Company or Dept is used, the User list will be refreshed automatically.
 
-A copy of the Company user list, the users in the Distribution list as well as a list of the differences between the two lists are Automatically saved to the user’s Desktop in a Sub-Folder called Contacts
+A copy of the Company user list, the users in the Distribution list as well as a list of the differences between the two lists are Automatically saved to the same folder as the the .PS1 file.
 
-In Addition, the Get-Departments function allows the user to retrieve a list of departments belonging to the selected company where needed.
+In Addition, the Get-Departments function allows the user to retrieve a list of departments belonging to the selected company where needed. It as well saves a csv of the results to the same folder as the .PS1 file
 
 USAGE:
 
