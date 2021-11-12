@@ -82,11 +82,11 @@ $rptpath"")
 if (!(test-path -path $rptpath)) {new-item -path $rptpath -itemtype directory}
 #>
 
-<# Checking for required ActiveDirectory modules #>
+		<# Checking for required ActiveDirectory modules #>
 Write-Host 'Checking For ActiveDirectory Module' -BackgroundColor DarkBlue -ForegroundColor White
 Write-Host ''
 
-<# If the AD modules are not installed, which by default they are not on a worksatation, enable and install the components#>
+		<# If the AD modules are not installed, which by default they are not on a worksatation, enable and install the components#>
 If(Get-Module -ListAvailable -Name "ActiveDirectory"){Write-Host 'Active Directory Modules Detected'}
 Else{
 	Write-Host '	Installing Active Directory Modules`n`rThis can take several minutes`n`rPlease Wait. . .'
@@ -103,7 +103,7 @@ Else{
 
 Write-Host '	Checking the ActiveDirectory module'
 
-<# Preloading the ActiveDirectory Modules #>
+		<# Preloading the ActiveDirectory Modules #>
 if ((Get-Module -Name "ActiveDirectory")) {''}
 else {
    import-module activedirectory
@@ -113,7 +113,7 @@ else {
 Write-Host 'All Set - The required modules are installed and loaded'  -BackgroundColor DarkBlue -ForegroundColor White
 Write-Host ''
 
-<# ActiveDirectory functionality is loaded and ready for use #>
+		<# ActiveDirectory functionality is loaded and ready for use #>
 
 function Check-Distro {
 	[CmdletBinding()]
@@ -132,10 +132,10 @@ CLS
 
 Write-host "Checking Distro $($Distro) for Users missing from $($Company) in the $($Dept) Department: `r`n"   -BackgroundColor DarkBlue -ForegroundColor White
 Write-Host "Please wait . . ."
-<# Load contact info from Global contacts list where company is listed as referenced in $Company #>
+		<# Load contact info from Global contacts list where company is listed as referenced in $Company #>
 
 If (($global:PreviousCompany -eq $Company) -and ($global:PrevDepart -eq $Dept)) {
- <# Write-Host "Contacts from $($Company) were loaded Previously" #>
+ 		<# Write-Host "Contacts from $($Company) were loaded Previously" #>
 	}
 else {
 	Write-Host "Loading Contacts from $($Company)"
@@ -144,7 +144,7 @@ else {
 	$global:PrevDepart = $Dept
 	}
 
-<# Load list of contcts in the Distro $Distro to comapre against #>
+		<# Load list of contcts in the Distro $Distro to comapre against #>
 Clear-Variable arrDi* -Scope Global
 [System.Collections.ArrayList]$arrDistro = Get-ADGroupMember -Identity $Distro -Recursive | Get-ADUser -Property DisplayName | Select-Object DisplayName,UserPrincipalName
 
@@ -152,20 +152,22 @@ If ([string]::IsNullOrEmpty($arrDistro)) {
 ''
 ''
 ''
-Write-Host 'Distribution Name not found `n`rPlease check the spelling of the Distrobution list and try again.' -ForegroundColor Red
+Write-Host "The Distribution Name `'$($Distro)`' was not found, `n`rPlease check the spelling of the Distribution list and try again." -ForegroundColor Red
+''
+''
 Return}
 
-<#Run Comparisson #>
+		<#Run Comparisson #>
 $list = ''
 $Missing = @()
 $i = 0
 $itemCheck  = ''
 foreach ($itemCheck in $arrUsers) {
 	$i++
-	<# Write-Progress -Activity "Comparing lines in the two files..." ` #>
-	<# PercentComplete (($i / $arrUsers.count)*100) -CurrentOperation $itemCheck #>
+			<# Write-Progress -Activity "Comparing lines in the two files..." ` #>
+			<# PercentComplete (($i / $arrUsers.count)*100) -CurrentOperation $itemCheck #>
 		if ($arrDistro -match $itemCheck) {
-<# do nothing #>
+		<# do nothing #>
 			}
 		else {
 			$Missing += $itemCheck
@@ -204,8 +206,8 @@ foreach ($itemCheck in $arrUsers) {
 	}
 		}
 }
-<# Display / Save list of users / contacts missing from the Distro #>
-<# $Missing#>
+		<# Display / Save list of users / contacts missing from the Distro #>
+		<# $Missing#>
 
 If (($Dept -eq '*') -or ($Dept -eq '')) {$DeptFilter = 'All'} else {$DeptFilter = $Dept} 
 $DeptFilter = $DeptFilter -replace "\*", "-ALL"
@@ -213,7 +215,7 @@ $arrUsers | Export-csv -path $rptpath"\Get-ADUser $($Company) - `($($DeptFilter)
 $arrDistro | Export-csv -path $rptpath"\Get-ADGroupMember $($Distro).csv" -NoTypeInformation
 $Missing | Export-csv -path $rptpath"\Users missing from $($Distro).csv" -NoTypeInformation
 Write-Host ''
-<# $Continue = Read-Host "Press enter to continue" #>
+		<# $Continue = Read-Host "Press enter to continue" #>
 ''
 }
 
@@ -239,7 +241,7 @@ Write-Host $Depts -ForegroundColor Cyan
 
 [console]::ForegroundColor="Green"; Get-Help $rptpath"\Check-Distro.ps1" -detailed;
 
-<# Use Import-Module '.\Check-Distro.ps1' to import the functions into Powershell #>
+		<# Use Import-Module '.\Check-Distro.ps1' to import the functions into Powershell #>
 
 
 <# 
@@ -257,8 +259,8 @@ Check-Distro -Company 'Mercury' -Distro 'CVS-DL-ALM-MERC-Everyone'
 # SIG # Begin signature block
 # MIIjPgYJKoZIhvcNAQcCoIIjLzCCIysCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUQPr04w8Jf9U5SVcuBVZKDLiK
-# 9iOggh3WMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU+k4RZ5sx8B9uLCg/Be0n7mBv
+# XKGggh3WMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgVGltZXN0YW1waW5nIENBMB4XDTIxMDEwMTAwMDAwMFoXDTMxMDEw
@@ -422,26 +424,26 @@ Check-Distro -Company 'Mercury' -Distro 'CVS-DL-ALM-MERC-Everyone'
 # Q29kZSBTaWduaW5nIFJTQTQwOTYgU0hBMzg0IDIwMjEgQ0ExAhAK+FP5bpXTvx4s
 # HxE0Euw+MAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkG
 # CSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEE
-# AYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQRVtJgg9UvdRJ+4TfBgJ9SOAGZczANBgkq
-# hkiG9w0BAQEFAASCAYABNcX/LTL/bFvTB4FLwIT+fhWo/cSf+j/M8XeNCk95K+XW
-# WInuWqavSV/+0PE6KEdDaxO1mSdXZ8Vkv2t8Amu7jMLWFsXepFwsNDao8zl6qBFD
-# MbeXktvNIDdDyl+eMbaneyNTvtTysukJcsPuRGFnIKUxSu2XrWN9/jtr+SBi6gS4
-# F9wjydKnM6577bZ7XAx/LTg7puJsFaFXQM/5U62Zf7iO/981+P1dfZQ/TOyMCS31
-# 0W0jaPQrzi6bwdsTwPdGw+w+r9xSh3QtWdL2Zdo5r91ldOaD+NLBAscsbeCCiWoh
-# nDoNfKlAhsZ2d05JrWTXwVfxDA+CbxEqdok8eebgEGdrwRNz2XMaFhZbt2y8T6xE
-# qy3ro8rZuI+pPOGiX36J6Dg9x9hmF3Mj46NsFEq7hiYtU1fNCFdBPH1Yc4hi9D24
-# xHcmi9N6RqmmTSLcapxad/e1eS7nX1tPLOaaJ6hT6Y8JJKDL/wbmrYATpXlfQRzs
-# ay45xx02tVnG1shU/46hggIwMIICLAYJKoZIhvcNAQkGMYICHTCCAhkCAQEwgYYw
+# AYI3AgEVMCMGCSqGSIb3DQEJBDEWBBSTuuEDKJk6FZiRv0HqrhYROn3YqDANBgkq
+# hkiG9w0BAQEFAASCAYAn5yRaWQXXfE8y9vFB9azk2P2Df3ImF8BLbCaVzJKTB8CZ
+# jYQdln60oS/UiSzLfv9IaMaS7D0f1qR+8dIa14pwEWggE9GD1cUwHRwJFFc+l8kV
+# mC3hsZCpgeQrL+2KbYBsPUAaSyY+XSjCB2lXU5A5fOmDj348Dc+xpKojRKgS+Nhl
+# ueuLyQfZ8kXsREg+m7TYjmwwQRbe5oYrn9/bwfqkfj6FnmjWZWHY4GvcAmZeNvnT
+# LvJzOVJ+4z8A5rZ+fhOkm+5LPzL3u75ZzFLPw9PpsZqEJdhd4vuqkP1LomMgy+JX
+# 3Vuh4WFOoV17adyW/P9jpsq8stsY0zED/NPs6AZAJE/x1L480mb886VQ9GxMBsXF
+# /DwpTlSMGziY1Vh2kOqsCrhwaDXePsU1Qz495bJ3uhr5k5vU1oyy8gpU97oZqVaV
+# I5SOWfvmVD7q0gNBbX7OnhDxXsXUujcQndJFPWfsXN7jUF02YkJOOz9MEOfUZ0fX
+# KxyorpjuNKh9A/xM7vyhggIwMIICLAYJKoZIhvcNAQkGMYICHTCCAhkCAQEwgYYw
 # cjELMAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQ
 # d3d3LmRpZ2ljZXJ0LmNvbTExMC8GA1UEAxMoRGlnaUNlcnQgU0hBMiBBc3N1cmVk
 # IElEIFRpbWVzdGFtcGluZyBDQQIQDUJK4L46iP9gQCHOFADw3TANBglghkgBZQME
 # AgEFAKBpMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8X
-# DTIxMTEwNTEzMzUzNlowLwYJKoZIhvcNAQkEMSIEIOaZWMbRlvt+SsjbNWAqp2IU
-# VgOD+aFKuqtM4lsCE/daMA0GCSqGSIb3DQEBAQUABIIBAAH5sFNcDLEC4PBxdWc4
-# WhWbH4DcBynGRE0+KBeRQZA63AKRrtJJHOjsGm+0pdk4UtcmfONbiSwp3g601aj1
-# aSZgeInrSbquiU1iBOuuNXmBJOGtW7KWc9ADMnjm+DIo/TLxePzlrteWsEdpz7Up
-# UkY1kKgMR6LJ7I8P1Ys9M1P+lY3zDTIYDkCeWxZ+uR0KvUvKEaiOHd1lc+dVGFLv
-# w+0QOg+VnRLcBcpaR1e3bTGlttCScvMjKpnGYOTG/lBR6w6H8fh1qEE5K7IxjldQ
-# XwRqy26t65uLmhr+z1uVQ4IE/kHhb6GRyg/uaMRoYBfIyywHOGAB/uaGTekCdOud
-# 6+o=
+# DTIxMTExMjE1MDc1N1owLwYJKoZIhvcNAQkEMSIEIJmZAIubCqXVRagg5y1I4kIe
+# 6J7q+Pas/Ji0uQvRZ66oMA0GCSqGSIb3DQEBAQUABIIBAJ/U4ah3WZcd0z2gOS1K
+# /5pYO7xxJ/2EU35NdWnbdW/yY2wNxDfZEFBBd80QvPaQLC50Xv9gxHRpHrjf3LKq
+# Ydvo/k/1EICH8gFbYtvu3m3sjcc+z6vv2ToP1DLyky8BHaZ6qUOg9zz8ONdsraY7
+# pQNru7Ur3NBlg81dvHfocC+qPtD7q0mkcQ629C0v3X2RMvUgnIBp30glZgIPsnjn
+# 0Hd/P924Lo0lTwGFmfDo/S525S27ETANQd14SjrnwfN4GdhgtQHt46MaPskJUSQH
+# TKxM22ECbtUezhPeY/lnlmmjkXrZRxJw5dW9znRvYdOSpmjXAlVM3mnaZcZMUXHj
+# l6c=
 # SIG # End signature block
