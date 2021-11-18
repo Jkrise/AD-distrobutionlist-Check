@@ -1,4 +1,4 @@
-<#
+ï»¿<#
 .SYNOPSIS
 
 Script for comparing users in a company list to users in a distribution list.
@@ -7,21 +7,19 @@ DESCRIPTION
 
 This PowerShell script take a Company Name (Company) and an optional Department (Dept) name along with the name of a Distribution list (Distro) and compares the active Directory information for the two entries and displays a list of differences if any are found. Thus, allowing users to ensure Distribution lists are properly maintained when new employees are added to the system. If multiple distro checks are done against the same Company/Dept, the previously cached Company/Dept data will be used to increase the efficiency of the process. If a different Company or Dept is used, the User list will be refreshed automatically.
 
-A copy of the Company user list, the users in the Distribution list as well as a list of the differences between the two lists are Automatically saved to the user’s Desktop in a Sub-Folder called Contacts
+A copy of the Company user list, the users in the Distribution list as well as a list of the differences between the two lists are Automatically saved to the userï¿½s Desktop in a Sub-Folder called Contacts
 
 In Addition, the Get-Departments function allows the user to retrieve a list of departments belonging to the selected company where needed.
 
 USAGE:
 
-Check-Distro [[-Company (Required)] ] [-Distro (Required)] [[-Dept] ] [[-UpdateAD] ] or Get-Departments [[-Company (Required)] ]'
+Check-Distro [-Company (Required)] [-Distro (Required)] [-Dept] or Get-Departments [-Company (Required)]'
 
 .PARAMETER Company The Company name to pull the list of Employee names and Email addresses from in the Active Directory. This item is Required.
 
 .PARAMETER Distro Name of the Distribution List used to verify the Members of the Company is Contains.
 
 .PARAMETER Dept Filters the list of Employees in the Company to a specific department. If not specified, all users from all departments will be used.
-
-.PARAMETER UpdateAD If specified, this option prompts the users to add the missing contacts to the Distribution list. (This function is deprecated)
 
 .PARAMETER Company For the Get-Departments function, this required command specifies which Company in the Active Directory to get the list of Departments from.
 
@@ -35,7 +33,7 @@ PS C:> Check-Distro -Company 'a la mode' -Distro 'vsg-dl-alm-supportdept' This c
 
 PS C:> Check-Distro -Company 'a la mode' -Distro 'vsg-dl-alm-supportdept' -Dept 'Customer Support' This command will query the Active Directory listing for all users with the Company name of 'a la mode' and will filter the list to only users listed with a Department of 'Customer Support'; Next it will check if the selected users exist in the Distrobution list 'vsg-dl-alm-supportdept'; If any users from 'a la mode' are missing, they will be displayed on screen.
 
-PS C:> Check-Distro -Company 'a la mode' -Distro 'vsg-dl-alm-supportdept' -Dept 'Customer Support' -UpdateAD 'True' This function will perform the same process as the example above; however, it will additionally prompt the user to add the missing contacts to the Distrobution list. (Currently this function is disabled)
+PS C:> Check-Distro -Company 'a la mode' -Distro 'vsg-dl-alm-supportdept' -Dept 'Customer Support' This function will perform the same process as the example above; however, it will additionally prompt the user to add the missing contacts to the Distrobution list. (Currently this function is disabled)
 
 PS C:> Check-Distro -Company 'a la mode' -Distro 'CVS-DL-OKCCampus' This command will query the Active Directory listing for all users with the Company name of 'a la mode' and will check if the selected users exist in the Distrobution list 'CVS-DL-OKCCampus'; If any users from 'a la mode' are missing, they will be displayed on screen.
 
@@ -45,13 +43,16 @@ PS C:> Check-Distro -Company 'TSG' -Distro 'CVS-DL-ALM-Everyone' -Dept 'ALM*' Th
 
 .INPUTS
 
-For Check-Distro : Company - This is the name of the Company filter to get the list of users from. (I.E. 'a la mode', 'Mercury' or 'TSG') Distro - The name of the Distribution list to compare against (This is a required field). (I.E. 'Distribution-dl-alm-supportdept', 'CVS-DL-OKCCampus' or 'CVS-DL-ALM-Everyone') Dept - This Option field applies a secondary filter to the company list narrowing it down from the whole company to a specific department within the company. (I.E. 'Customer Support', 'Mercury Sales' or 'Marketing-Nzd') UpdateAD - This optional feature enables the prompt to update the Distrobution List with any missing users. Presently while the prompt can be enabled, the function itself is currently not available.
+For Check-Distro : 
+Company - This is the name of the Company filter to get the list of users from. (I.E. 'a la mode', 'Mercury' or 'TSG') 
+Distro - The name of the Distribution list to compare against (This is a required field). (I.E. 'Distribution-dl-alm-supportdept', 'CVS-DL-OKCCampus' or 'CVS-DL-ALM-Everyone') 
+Dept - This Option field applies a secondary filter to the company list narrowing it down from the whole company to a specific department within the company. (I.E. 'Customer Support', 'Mercury Sales' or 'Marketing-Nzd')
 
 For Get-Departments: Company - This required field is used to search the Active Directory listing and returns a list of unique departments for the selected company
 
 .OUTPUTS
 
-For Check-Distro : A list of users missing from the Distro (if any are found) are disabled on the screen in Red A csv list of the Company users (and Department is used) is saved to the user’s desktop in a folder called 'Contacts' A CSV list of the Users from the Distrobution List is saved to the user’s desktop in a folder called 'Contacts' A CSV list of the difference in users, if any, is saved to the user’s desktop in a folder called 'Contacts'
+For Check-Distro : A list of users missing from the Distro (if any are found) are disabled on the screen in Red A csv list of the Company users (and Department is used) is saved to the userï¿½s desktop in a folder called 'Contacts' A CSV list of the Users from the Distrobution List is saved to the userï¿½s desktop in a folder called 'Contacts' A CSV list of the difference in users, if any, is saved to the userï¿½s desktop in a folder called 'Contacts'
 
 For Get-Departments: A list of the departments is displayed on screen
 
@@ -59,191 +60,200 @@ For Get-Departments: A list of the departments is displayed on screen
 
 
 
-	This Powershell script and its functions were written by Jason Krise and utilizes information found online in thefollowing references:
-	https://shellgeek.com/powershell-get-list-of-users-in-ad-group/
+	This PowerShell script and its functions were written by Jason Krise and utilizes information found online in thefollowing references:
+	https://shellgeek.com/PowerShell-get-list-of-users-in-ad-group/
 	https://stackoverflow.com/questions/59216952/get-aduser-not-recognized
-	https://shellgeek.com/powershell-export-active-directory-group-members/
-	https://shellgeek.com/set-adgroup-modify-active-directory-group-attributes-in-powershell/
-	https://dotnet-helpers.com/powershell/compare-two-files-list-differences/
-	https://stackoverflow.com/questions/30543430/using-powershell-get-values-from-sql-table
+	https://shellgeek.com/PowerShell-export-active-directory-group-members/
+	https://shellgeek.com/set-adgroup-modify-active-directory-group-attributes-in-PowerShell/
+	https://dotnet-helpers.com/PowerShell/compare-two-files-list-differences/
+	https://stackoverflow.com/questions/30543430/using-PowerShell-get-values-from-sql-table
 	https://www.microsoft.com/en-us/download/details.aspx?id=35588
-	https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help?view=powershell-7.1
-	https://adamtheautomator.com/powershell-comment/
+	https://docs.microsoft.com/en-us/PowerShell/module/microsoft.PowerShell.core/about/about_comment_based_help?view=PowerShell-7.1
+	https://adamtheautomator.com/PowerShell-comment/
 #>
-Set-ExecutionPolicy -executionpolicy bypass
+Set-ExecutionPolicy -ExecutionPolicy bypass
 
-CLS <# Clear Screen #>
-$global:PrevDepart = $Null
-$global:PreviousCompany = $null
-$global:Company = $null
-$global:rptpath = Get-Location 
-<#  Path was previously hard set to the users Desktop, change made to allow user to load and run the script from any folder
-$rptpath"")
-if (!(test-path -path $rptpath)) {new-item -path $rptpath -itemtype directory}
-#>
+Clear-Host <# Clear Screen #>
 
-		<# Checking for required ActiveDirectory modules #>
+$global:PreviousCompany = $null #Used to Cache the Company user list since it may be checked against multiple distros; Allows for faster loading of the data
+$global:Company = $null #Creates the variable to store the company info in for the initial call too. It is stored as a global since a couple of different functions may use it
+$global:rptpath = Get-Location #Loads the current path, used for ensuring the csv files that are written out go to the same location the script is loaded from
+$global:arrUsers = @() #Cache of the list of user names pulled from the company list, cache is used to speed up the AD lookup process when multiple distros are checked against the same company list
+
+<# Checking for required ActiveDirectory modules #>
 Write-Host 'Checking For ActiveDirectory Module' -BackgroundColor DarkBlue -ForegroundColor White
 Write-Host ''
 
-		<# If the AD modules are not installed, which by default they are not on a worksatation, enable and install the components#>
-If(Get-Module -ListAvailable -Name "ActiveDirectory"){Write-Host 'Active Directory Modules Detected'}
-Else{
+<# If the AD modules are not installed, which by default they are not on a worksatation, enable and install the components#>
+if (Get-Module -ListAvailable -Name "ActiveDirectory") { Write-Host 'Active Directory Modules Detected' }
+else {
 	Write-Host '	Installing Active Directory Modules`n`rThis can take several minutes`n`rPlease Wait. . .'
 
-    Set-ItemProperty "REGISTRY::HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" UseWUserver -value 0
-    Get-Service wuauserv | Restart-Service
-    Get-WindowsCapability -Online -Name RSAT*  | Add-WindowsCapability -Online
-    Set-ItemProperty "REGISTRY::HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" UseWUserver -value 1
-    
-	Get-WindowsCapability -Online | Where-Object {$_.Name -like "*ActiveDirectory.DS-LDS*"} | Add-WindowsCapability -Online
-	import-module activedirectory
+	Set-ItemProperty "REGISTRY::HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" UseWUserver -Value 0
+	Get-Service wuauserv | Restart-Service
+	Get-WindowsCapability -Online -Name RSAT* | Add-WindowsCapability -Online
+	Set-ItemProperty "REGISTRY::HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" UseWUserver -Value 1
+
+	Get-WindowsCapability -Online | Where-Object { $_.Name -like "*ActiveDirectory.DS-LDS*" } | Add-WindowsCapability -Online
+	Import-Module activedirectory
 	Install-Module -Name ExchangeOnlineManagement
-	}
+}
 
 Write-Host '	Checking the ActiveDirectory module'
 
-		<# Preloading the ActiveDirectory Modules #>
-if ((Get-Module -Name "ActiveDirectory")) {''}
+<# Preloading the ActiveDirectory Modules #>
+if ((Get-Module -Name "ActiveDirectory")) { '' }
 else {
-   import-module activedirectory
-   Write-Host ''
-	}
+	Import-Module activedirectory
+	Write-Host ''
+}
 
-Write-Host 'All Set - The required modules are installed and loaded'  -BackgroundColor DarkBlue -ForegroundColor White
+Write-Host 'All Set - The required modules are installed and loaded' -BackgroundColor DarkBlue -ForegroundColor White
 Write-Host ''
 
-		<# ActiveDirectory functionality is loaded and ready for use #>
+<# ActiveDirectory functionality is loaded and ready for use #>
 
+# Function to check a list of users tied to a company (with a department filter available) against a specified Distro in the current Active Directory
 function Check-Distro {
 	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory = $true)]
-		    [string]$Company,
-        [Parameter(Mandatory = $true)]
-        	[string]$Distro,
-		[Parameter()]
-        	[string]$Dept = '*',
-		[Parameter()]
-        	[string]$UpdateAD = 'false'
-		)
+		[string]$Company,
+		[Parameter(Mandatory = $true)]
+		[string]$Distro
+	)
 
-CLS
+	Clear-Host #clear the screen, used more for debugging purposes, but is also useful when there is already a lot of other data in the PowerShell window
 
-Write-host "Checking Distro $($Distro) for Users missing from $($Company) in the $($Dept) Department: `r`n"   -BackgroundColor DarkBlue -ForegroundColor White
-Write-Host "Please wait . . ."
-		<# Load contact info from Global contacts list where company is listed as referenced in $Company #>
-
-If (($global:PreviousCompany -eq $Company) -and ($global:PrevDepart -eq $Dept)) {
- 		<# Write-Host "Contacts from $($Company) were loaded Previously" #>
+	<#  New Multi-company Check Begin    #>
+	<# Beging Company check clean up, standradizes the input to removing the trailing semi-colon ";" if it exist #>
+	if ($Company.Chars($Company.Length - 1) -eq ';')
+	{
+		$Company = ($Company.TrimEnd(';'))
 	}
-else {
-	Write-Host "Loading Contacts from $($Company)"
-	[System.Collections.ArrayList]$global:arrUsers =  Get-ADUser -Filter "Company -like '$($Company)' -and Department -like '$($Dept)'" | Get-ADUser -Property DisplayName | Where-Object { $_.Enabled -eq "true"} |Select-Object DisplayName,UserPrincipalName
-	$global:PreviousCompany = $Company
-	$global:PrevDepart = $Dept
-	}
+	<# End standardization of Company input   #>
 
-		<# Load list of contcts in the Distro $Distro to comapre against #>
-Clear-Variable arrDi* -Scope Global
-[System.Collections.ArrayList]$arrDistro = Get-ADGroupMember -Identity $Distro -Recursive | Get-ADUser -Property DisplayName | Select-Object DisplayName,UserPrincipalName
+	# checks to see if the company list passed to the function was the same as the last one. If so, it will load the previous list of users from the cache instead of reloading from the AD
+	# This cache is only stored for as long as the company string remains constant, as long as the current PowerShell instance is loaded, and as long as the PowerShell script (not the function) is not reloaded
+	# The Distro is ALWAYS reloaded from the AD and is never cached	
+	if ($global:PreviousCompany -eq $Company) {
+		<# Write-Host "Contacts from $($Company) were loaded Previously" #>
+		Write-Host "The Same Company list was specified, reloading contacts from the Cache" -BackgroundColor DarkBlue -ForegroundColor White
 
-If ([string]::IsNullOrEmpty($arrDistro)) {
-''
-''
-''
-Write-Host "The Distribution Name `'$($Distro)`' was not found, `n`rPlease check the spelling of the Distribution list and try again." -ForegroundColor Red
-''
-''
-Return}
+	} else {
 
-		<#Run Comparisson #>
-$list = ''
-$Missing = @()
-$i = 0
-$itemCheck  = ''
-foreach ($itemCheck in $arrUsers) {
-	$i++
-			<# Write-Progress -Activity "Comparing lines in the two files..." ` #>
-			<# PercentComplete (($i / $arrUsers.count)*100) -CurrentOperation $itemCheck #>
-		if ($arrDistro -match $itemCheck) {
-		<# do nothing #>
+		$global:PreviousCompany = $Company #Set Cache reference to the standardized Company string
+		[System.Collections.ArrayList]$global:arrUsers = @() #Clears the current cache if set
+
+		#Separate each individual company so we can load the specified users Contacts (Companies are separated by ; whereas the  department filter for a company uses the : designation
+		$Check = $Company.Split(";")
+		$item = ''
+
+		#For each company found, look for the department filter
+		foreach ($item in $Check) {
+			$item = $item.Trim() #used to trim leading and trailing white space to account for different ways a user could type the input string
+			$Newitem = '' #inistiate the NewItem variable, done here so it is always blank before it is called so old data cannot accidentally get re-used
+			$Newitem = $item.Split(":") #Splits the compant and department via the : in the string
+
+			#If the company string contains more than just a company and a department, throw a warning about incorrect formatting and abort (I.E. 'TSG:alamode:Mercury' would be wrong, but 'TSG:alamode; TSG:Mercury' would be acceptable)
+			if ($newitem.count -gt 2) {
+				Write-Host ""
+				Write-Warning "`n`rThe Entry '$($Item)' is invalid, containing to many departments filters per individual Company. `n`rPlease correct your entry using the single company name with optional single department name separated by a colon : (I.E. 'Company name:department') and try again.`n`rTo use multiple departments, please list the company multiple times and separate the companies using a semi-colon ; (I.E. 'Company1:dept1; Company1:dept2; Company2:DeptA; Company2:DeptR) "
+				Write-Host ''
+				return
 			}
-		else {
-			$Missing += $itemCheck
-			}
+
+			# if a company was specified, but no department filter was included, set the department filter to * (or all) for the search and set a descriptive text to all
+			if ($newitem.count -ne 2) { $Newitem += "*" }
+			if (($Newitem[1] -eq '*') -or ($Newitem[1] -eq '')) { $DeptFilter = "in 'All' Departments" } else { $DeptFilter = "in the '$($Newitem[1])' Department" }
+			$DeptFilter = $DeptFilter -replace "\*","-ALL"
+			Write-Host "Loading Users from '$($Newitem[0])' $($DeptFilter):" -BackgroundColor DarkBlue -ForegroundColor White
+			[System.Collections.ArrayList]$global:arrUsers += Get-ADUser -Filter "Company -like '$($Newitem[0])' -and Department -like '$($Newitem[1])'" | Get-ADUser -Property DisplayName | Where-Object { $_.Enabled -eq "true" } | Select-Object DisplayName,UserPrincipalName
+		}
+
+		Write-Host '' #Give us an blank line
+		# $Continue = Read-Host "Press enter to continue" # Used for Debugging
+		# return #Used for Debugging
+		<# NEW COPMPANY CHECK END #>
 	}
 
+	Write-Host "Checking Distro $($Distro) for missing users: `r`n" -BackgroundColor DarkBlue -ForegroundColor White
+	Write-Host "Please wait . . ."
+	<# Load contact info from Global contacts list where company is listed as referenced in $Company #>
+
+	<# Load list of contcts in the Distro $Distro to comapre against #>
+	Clear-Variable arrDi* -Scope Global
+	[System.Collections.ArrayList]$arrDistro = Get-ADGroupMember -Identity $Distro -Recursive | Get-ADUser -Property DisplayName | Select-Object DisplayName,UserPrincipalName
+
+	# If The distro is not found or returns as null, Display an error on screen about it
+	if ([string]::IsNullOrEmpty($arrDistro)) {
+		Write-Host "`n`r`n`r" #Give us an blank line
+		Write-Host "The Distribution Name `'$($Distro)`' was not found, `n`rPlease check the spelling of the Distribution list and try again." -ForegroundColor Red
+		Write-Host "`n`r`n`r" #Give us an blank line
+		return #Returns to prompt and do not process the rest of the function
+	}
+
+	<#Run Comparisson #>
+	$list = '' #Initiate variable list and set it to null to prevent previous data from causing erroneous results
+	$Missing = @() # Initiate The missing variable and set it as an empty array 
+	$itemCheck = ''
+	foreach ($itemCheck in $arrUsers) {
+		if (!($arrDistro -match $itemCheck)) { $Missing += $itemCheck } #If user from company is not found in the Distro,add them to the missing list
+	}
+	#Format the returned list of missing users to make is easier to read on the screen
 	$list = $missing -replace "@{","`n`r"
 	$list = $list -replace "}","`n`r"
 	$list = $list -replace "DisplayName=","Name: "
-	$list = $list -replace  "UserPrincipalName=","Email: "
+	$list = $list -replace "UserPrincipalName=","Email: "
 
 
-	If ([string]::IsNullOrEmpty($list)) {
-		Write-Host "The $($Company) and $($Distro) lists are in sync"  -ForegroundColor Green
-		}
-	else {
-		Write-Host "The following $($Company) user(s) are missing from the Distro $($Distro):`r`n" 
-		<# Write-Host "The following users are missing from the Distro: `r`n"  #>
-		Write-host $list -ForegroundColor Red
-	
-		<# Attempt to Add user to Distro #>
-		If ($UpdateAD -eq 'True') {
-		$addToDistro = ''
-		$addToDistro = Read-Host -Prompt "Import the missing user(s) into the Distro $($Distro) (Y/N): `n`r"
-		if ($addToDistro -eq 'y') {
-		<# Add-DistributionGroupMember -Identity $Distro -Member "JohnEvans@contoso.com" 
-		ForEach ($User in $Missing)
-		{
-			get-aduser -filter "emailaddress -eq '$($Missing.UserPrincipalName)'"|Add-ADGroupMember -Identity $Distro -Members $_
-		}
-	#> 
-		Write-Host 'Adding to the Distro'
+	# is the list of users is empty, then the Company contacts are all in the Distro that was selected.
+	if ([string]::IsNullOrEmpty($list)) {
+		Write-Host "The $($Company) and $($Distro) lists are in sync" -ForegroundColor Green
 	}
 	else {
-		Write-Host 'Distro not updated'
+		#Otherwise, display the list of missing users
+		Write-Host "The following $($Company) user(s) are missing from the Distro $($Distro):`r`n"
+		Write-Host $list -ForegroundColor Red
 	}
-		}
-}
-		<# Display / Save list of users / contacts missing from the Distro #>
-		<# $Missing#>
 
-If (($Dept -eq '*') -or ($Dept -eq '')) {$DeptFilter = 'All'} else {$DeptFilter = $Dept} 
-$DeptFilter = $DeptFilter -replace "\*", "-ALL"
-$arrUsers | Export-csv -path $rptpath"\Get-ADUser $($Company) - `($($DeptFilter)`).csv" -NoTypeInformation
-$arrDistro | Export-csv -path $rptpath"\Get-ADGroupMember $($Distro).csv" -NoTypeInformation
-$Missing | Export-csv -path $rptpath"\Users missing from $($Distro).csv" -NoTypeInformation
-Write-Host ''
-		<# $Continue = Read-Host "Press enter to continue" #>
-''
+	<# Save list of users / contacts missing from the Distro #>
+	$CompanyFilter = $Company -replace "\*","(ALL)" # cleans up the names to remove invalid file name characters
+	$CompanyFilter = $CompanyFilter -replace "\:","-" # cleans up the names to remove invalid file name characters
+	$arrUsers | Export-Csv -Path $rptpath"\Get-ADUser $($CompanyFilter).csv" -NoTypeInformation
+	$arrDistro | Export-Csv -Path $rptpath"\Get-ADGroupMember $($Distro).csv" -NoTypeInformation
+	$Missing | Export-Csv -Path $rptpath"\Users missing from $($Distro).csv" -NoTypeInformation
+	Write-Host "A copy of the data gathered was saved in '$($rptpath)' as .csv reports " -ForegroundColor Green
+	Write-Host ''
+	<# $Continue = Read-Host "Press enter to continue"  # Used for Debugging #>
+	''
 }
 
-
+#This function returns the list of departments for the specified company
 function Get-Departments {
 	[CmdletBinding()]
 	param(
-		[Parameter()]
-		    [string]$Company = "a la mode"
-		)
-Write-Host "`n`rDepartment Listing for $($Company):" -BackgroundColor DarkBlue -ForegroundColor White
-$Dept = get-aduser -Filter "Company -like '$($Company)'" -property department | select department | sort-object department -unique
-$Depts = $Dept -replace "@{department=",""
-$Depts = $Depts -replace "}","`n`r"
+		[Parameter(Mandatory = $true)]
+		[string]$Company
+	)
+	Write-Host "`n`rDepartment Listing for $($Company):" -BackgroundColor DarkBlue -ForegroundColor White
+	$Dept = Get-ADUser -Filter "Company -like '$($Company)'" -Property department | Select-Object department | Sort-Object department -Unique
+	$Depts = $Dept -replace "@{department=",""
+	$Depts = $Depts -replace "}","`n`r"
 
-If (($Company -eq '*') -or ($Company -eq '')) {$CompanyFilter = 'All'} else {$CompanyFilter = $Company} 
-$CompanyFilter = $CompanyFilter -replace "\*", "-ALL"
-$Dept | Export-csv -path $rptpath"\Get-Departments - $($CompanyFilter).csv" -NoTypeInformation
+	# Filter company name provided to use Filename safe characters	
+	if (($Company -eq '*') -or ($Company -eq '')) { $CompanyFilter = 'All' } else { $CompanyFilter = $Company }
+	$CompanyFilter = $CompanyFilter -replace "\*","-ALL"
+	$Dept | Export-Csv -Path $rptpath"\Get-Departments - $($CompanyFilter).csv" -NoTypeInformation
 
-Write-Host $Depts -ForegroundColor Cyan
-''
+	Write-Host $Depts -ForegroundColor Cyan
+	''
 }
 
-[console]::ForegroundColor="Green"; Get-Help $rptpath"\Check-Distro.ps1" -detailed;
+#After loading functions, display quick help for using the function
+[console]::ForegroundColor = "Green"; Get-Help $rptpath"\Check-Distro.ps1" -Detailed;
 
-		<# Use Import-Module '.\Check-Distro.ps1' to import the functions into Powershell #>
-
-
+<# Use Import-Module '.\Check-Distro.ps1' to import the functions into PowerShell #>
 <# 
 Test Examples 
 Get-Departments -Company 'Mercury'
@@ -255,6 +265,8 @@ Check-Distro -Company 'a la mode' -Distro 'CVS-DL-ALM-Everyone'
 Check-Distro -Company 'a la mode' -Distro 'vsg-dl-alm-supportdept' -Dept 'Customer Support'
 Check-Distro -Company 'a la mode' -Distro 'vsg-dl-alm-supportdept' -Dept 'Customer Support' -UpdateAD 'True'
 Check-Distro -Company 'Mercury' -Distro 'CVS-DL-ALM-MERC-Everyone'
+## https://github.com/DTW-DanWard/PowerShell-Beautifier
+## Edit-DTWBeautifyScript "Check-Distro.ps1" -IndentType Tabs
 #>
 # SIG # Begin signature block
 # MIIjPgYJKoZIhvcNAQcCoIIjLzCCIysCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
